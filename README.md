@@ -1,30 +1,6 @@
-# JavaRandomReverser
-Reverses the possible internal seed(s) of Java's java.util.Random class given information on its output in the form of a system of inequalities on various Random calls. The algorithm works by reducing the problem to finding certain vectors in a lattice, which is then solved through a branch and bound algorithm using a reduced version of the lattice.
+This is 99% the code of Mathew Bolan's LattiCG: https://github.com/mjtb49/LattiCG
 
+I have slightly adapted it, so it reverses the RNG of Pokemon Showdown instead of the RNG of Java.
 
-# Use the repository
+The only code from me is in https://github.com/MyrenEario/LattiCGforPokemonShowdown/tree/master/src/pokemon/pokemonshowdown
 
-All the packages are uploaded here through Jenkins CI: https://maven.latticg.com
-
-You can browse it by hands here : https://nexus.seedfinding.com/#browse/browse:maven-latticg
-
-The javadocs can be seen here : https://latticg.com
-
-To use the libs you need first to declare the maven `maven { url "https://maven.latticg.com/"}` :
-
-Gradle Groovy DSL :
-
-`implementation 'com.seedfinding:latticg:1.07@jar'`
-
-Apache Maven:
-```
-<dependency>
-  <groupId>com.seedfinding</groupId>
-  <artifactId>latticg</artifactId>
-  <version>1.07</version>
-</dependency>
-```
-
-Scala SBT
-
-`libraryDependencies += "com.seedfinding" % "latticg" % "1.07"`
