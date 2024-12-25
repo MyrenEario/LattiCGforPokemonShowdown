@@ -1,0 +1,134 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id "jacoco"
+}
+
+group = 'com.seedfinding'
+archivesBaseName = project.name
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+sourceSets {
+    latticgRuntime
+    main {
+        compileClasspath += latticgRuntime.output
+        runtimeClasspath += latticgRuntime.output
+    }
+    test {
+        compileClasspath += latticgRuntime.output
+        runtimeClasspath += latticgRuntime.output
+    }
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly "org.jetbrains:annotations:19.0.0"
+    latticgRuntimeCompileOnly "org.jetbrains:annotations:19.0.0"
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${jupiterVersion}")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:${jupiterVersion}")
+    testImplementation('org.junit-pioneer:junit-pioneer:1.3.8')
+
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}")
+    testRuntimeOnly('org.junit.platform:junit-platform-console:1.7.1')
+}
+
+compileJava {
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
+jar {
+    from sourceSets.main.output, sourceSets.latticgRuntime.output
+}
+
+
+tasks.register('latticgRuntimeJar', Jar) {
+    from sourceSets.latticgRuntime.output
+    archiveClassifier = 'rt'
+}
+
+build.dependsOn latticgRuntimeJar
+
+test {
+    useJUnitPlatform {
+        includeEngines("junit-jupiter")
+        maxHeapSize = "1G"
+    }
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+        outputs.upToDateWhen { false }
+        showStandardStreams = true
+        showExceptions true
+        showCauses true
+        showStackTraces true
+    }
+    finalizedBy(jacocoTestReport)
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'latticg'
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+
+            artifact source: latticgRuntimeJar, classifier: 'rt', extension: 'jar'
+
+            pom {
+                name = 'Latticg'
+                description = 'Reverses the possible internal seed(s) of Java\'s java.util.Random class given information on its output in the form of a system of inequalities on various Random calls'
+                url = 'http://www.latticg.com'
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://opensource.org/licenses/MIT'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'mjtb49'
+                        name = 'Matthew Bolan'
+                    }
+                    developer {
+                        id = 'Earthcomputer'
+                        name = 'Joseph Burton'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/mjtb49/LattiCG.git'
+                    url = 'https://github.com/mjtb49/LattiCG.git'
+                }
+            }
+        }
+
+    }
+    repositories {
+        maven {
+            def releasesRepoUrl = "https://maven.latticg.com/releases"
+            def snapshotsRepoUrl = "https://maven.latticg.com/snapshots"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+        }
+    }
+}
+
+javadoc {
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
+
