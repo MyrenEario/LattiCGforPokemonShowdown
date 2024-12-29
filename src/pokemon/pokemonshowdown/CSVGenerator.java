@@ -13,7 +13,7 @@ public class CSVGenerator {
 	
 	
 	public static void generateCSV(long seed, int[] metromoves, int[] rngcalls, int gen, int suffix) {
-		boolean advanceToCurrentTurn = false;
+		boolean advanceToCurrentTurn = true;
 		
 		if(advanceToCurrentTurn) {
 			for(int i=0; i < metromoves.length;i++) {

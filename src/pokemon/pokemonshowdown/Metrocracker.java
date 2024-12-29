@@ -51,6 +51,9 @@ public class Metrocracker extends JFrame {
 	 */
 	public Metrocracker() {
 		super("LattiCG Metrocracker");
+		
+		System.out.println(Metromovelist.gen3.length);
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();

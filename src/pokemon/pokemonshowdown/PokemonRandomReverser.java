@@ -1,7 +1,10 @@
 package pokemonshowdown;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import com.seedfinding.latticg.RandomReverser;
 import com.seedfinding.latticg.reversal.calltype.FilteredSkip;
@@ -15,6 +18,30 @@ public class PokemonRandomReverser extends RandomReverser{
 		super(PSRNG, filteredSkips);
 	}
     
+    
+//    public static void main(String[] args) {
+//    	new PokemonRandomReverser(new ArrayList<>()).paralysisTest();
+//    }
+//    
+//    public void paralysisTest() {
+//    	for(int i=0;i<16;i++) {
+//    		addMeasuredSeed(BigInteger.valueOf(0),(BigInteger.valueOf(2).pow(64)).divide(BigInteger.valueOf(4)));	
+//    		addUnmeasuredSeeds(10);
+//    	}
+//    	for(int i=0;i<4;i++) {
+//    		addMeasuredSeed(BigInteger.valueOf(0),(BigInteger.valueOf(2).pow(64)).divide(BigInteger.valueOf(256)));
+//    		addUnmeasuredSeeds(10);
+//    	}
+//    	
+//    	System.out.println("Starting calculation");
+//    	setVerbose(true);
+//    	AtomicInteger count = new AtomicInteger(0);
+//        findAllValidSeeds().forEach(s -> {
+//            count.incrementAndGet();
+//        });
+//        
+//        System.out.println(count);
+//    }
     
     
     public void addNextIntCall(int n, int value) {
@@ -44,6 +71,10 @@ public class PokemonRandomReverser extends RandomReverser{
         upper_bound = upper_bound.add(BigInteger.valueOf(2).pow(32));
         
         addMeasuredSeed(lower_bound, upper_bound);
+    }
+    
+    public void addNextToFromIntCall(int from, int to, int min, int max) {
+    	addNextIntCall(to-from, min-from, max-from);
     }
     
     public void consumeNextIntCall(int num_calls) {
