@@ -1,12 +1,11 @@
 package pokemonshowdown;
 
-import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 
 public class CSVGenerator {
 	public static final int csvlength = 5000;
@@ -48,6 +47,27 @@ public class CSVGenerator {
         }
 	}
 	
+	
+
+	
+	public static void generateCSVWithComments(long seed, ArrayList<String> comments, int gen, int suffix) {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setSelectedFile(new File("rngoutput"+ suffix +".csv"));
+        try (PrintWriter writer = new PrintWriter(fileChooser.getSelectedFile())) {
+            writer.println("Seed, Chance, Metromove, Notes");
+            String nextLine;
+            for (int i=0 ; i < csvlength; i++) {
+                nextLine = Long.toHexString(seed) + ", "+PRNG.next(seed) + ", " + PRNG.metroMove(seed, gen);
+                if(i>0 && i<=comments.size()) {
+                	nextLine += ", " + comments.get(i-1);
+                }
+            	writer.println(nextLine);
+                seed = PokemonRandomReverser.PSRNG.nextSeed(seed);
+            }
+        } catch (IOException ex) {
+            System.out.println("Failed to save file " + ex.getMessage());
+        }
+	}
 	
 	
 }
