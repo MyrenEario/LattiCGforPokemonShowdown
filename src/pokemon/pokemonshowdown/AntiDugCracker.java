@@ -132,7 +132,7 @@ public class AntiDugCracker extends JFrame {
 		
 		attack_result_pane = new JTextPane();
 		attack_result_pane.setEditable(false);
-		attack_result_pane.setBounds(424, 66, 124, 20);
+		attack_result_pane.setBounds(380, 66, 196, 20);
 		contentPane.add(attack_result_pane);
 		
 		JButton btnNewButton_1 = new JButton("Crack RNG");
@@ -151,7 +151,7 @@ public class AntiDugCracker extends JFrame {
 		
 		rng_result_pane = new JTextPane();
 		rng_result_pane.setEditable(false);
-		rng_result_pane.setBounds(424, 172, 124, 20);
+		rng_result_pane.setBounds(380, 172, 196, 20);
 		contentPane.add(rng_result_pane);
 		
 		burned_box = new JCheckBox("Burned");

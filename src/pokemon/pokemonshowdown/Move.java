@@ -1,5 +1,8 @@
 package pokemonshowdown;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class Move {
 	public static Move Earthquake = new Move("Earthquake", 100, true, false);
 	public static Move Struggle = new Move("Struggle", 50, false, false);
@@ -70,8 +73,16 @@ public class Move {
 		throw new NullPointerException();
 	}
 	
+	public static double round(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    BigDecimal bd = BigDecimal.valueOf(value);
+	    bd = bd.setScale(places, RoundingMode.HALF_UP);
+	    return bd.doubleValue();
+	}
+	
 	public static float toPercentage(int damageAmount, int health_points) {
-		return ( (1000*damageAmount + (health_points/2) )/ health_points) / (float)10;
+		return 100* (float)round( damageAmount/ (double)health_points ,3);
 	}
 	
 	
