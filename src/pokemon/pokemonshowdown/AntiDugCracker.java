@@ -478,7 +478,7 @@ public class AntiDugCracker extends JFrame {
 				if(!crits.get(i)) {
 					device.consumeNextIntCall(1);
 				}else {
-					device.addNextIntCall(20, 0);
+					device.addNextIntCall(16, 0);
 				}
 				comments.add("Crit Check");
 				
